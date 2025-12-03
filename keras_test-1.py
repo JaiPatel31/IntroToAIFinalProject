@@ -21,9 +21,12 @@ train_labels = train_labels[:-10000]
 model = keras.Sequential([
     layers.Input(shape=(28, 28)),
     layers.Flatten(),
-    layers.Dense(16, activation="relu"),
+    layers.Dense(256, activation="relu"),
+    layers.Dense(128, activation="relu"),
+    layers.Dense(64, activation="relu"),
     layers.Dense(10, activation="softmax"),
 ])
+
 
 
 """ # CNN Model
@@ -50,8 +53,8 @@ model.compile(
 # Training with history
 history = model.fit(
     train_images, train_labels,
-    epochs=10,
-    batch_size=10,
+    epochs=12,
+    batch_size=64,
     validation_data=(val_images, val_labels),
 )
 
