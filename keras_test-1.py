@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 # Data
 (train_images, train_labels), (test_images, test_labels) = keras.datasets.fashion_mnist.load_data()
@@ -75,3 +76,27 @@ plt.show()
 # Test evaluation
 test_loss, test_acc = model.evaluate(test_images, test_labels)
 print("Test accuracy:", test_acc)
+
+# Predict on test set
+y_prob = model.predict(test_images)
+y_pred = np.argmax(y_prob, axis=1)
+
+# Confusion matrix
+cm = confusion_matrix(test_labels, y_pred)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+plt.figure(figsize=(6,6))
+disp.plot(values_format='d', cmap="Blues", colorbar=False)
+plt.title("Confusion Matrix – Final CNN")
+plt.show()
+
+# Misclassified samples
+mis_idx = np.where(y_pred != test_labels)[0]
+
+plt.figure(figsize=(8,8))
+for i, idx in enumerate(mis_idx[:9]):
+    plt.subplot(3,3,i+1)
+    plt.imshow(test_images[idx].squeeze(), cmap="gray")
+    plt.title(f"True: {test_labels[idx]}, Pred: {y_pred[idx]}")
+    plt.axis('off')
+plt.tight_layout()
+plt.show()
