@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="09895286-3b69-4bdc-ad6a-80727efb6ad1" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/Plots/ThirdRunPlotsCNN/Accuracy.txt" afterDir="false" />
@@ -60,6 +63,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jai Patel\PycharmProjects\IntroToAIFinalProject\Plots" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

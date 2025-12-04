@@ -53,7 +53,7 @@ model.compile(
 # Training with history
 history = model.fit(
     train_images, train_labels,
-    epochs=12,
+    epochs=18,
     batch_size=64,
     validation_data=(val_images, val_labels),
 )
