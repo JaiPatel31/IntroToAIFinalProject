@@ -31,15 +31,17 @@ train_labels = train_labels[:-10000]
 
  # CNN Model
 model = keras.Sequential([
-    layers.Input(shape=(28, 28, 1)), # Input shape with channel dimension
-    layers.Conv2D(16, kernel_size=(3, 3), activation="relu"),
-    layers.MaxPooling2D(pool_size=(2, 2)),
-    layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
-    layers.MaxPooling2D(pool_size=(2, 2)),
+    layers.Input(shape=(28, 28, 1)),
+    layers.Conv2D(32, (3, 3), activation="relu"),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation="relu"),
+    layers.MaxPooling2D((2, 2)),
     layers.Flatten(),
-    layers.Dense(32, activation="relu"),
+    layers.Dense(128, activation="relu"),
+    layers.Dropout(0.3),               # helps val accuracy generalize
     layers.Dense(10, activation="softmax"),
 ])
+
 
 
 learning_rate = 1e-3
@@ -53,7 +55,7 @@ model.compile(
 # Training with history
 history = model.fit(
     train_images, train_labels,
-    epochs=18,
+    epochs=15,
     batch_size=64,
     validation_data=(val_images, val_labels),
 )
