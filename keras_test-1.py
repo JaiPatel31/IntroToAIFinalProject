@@ -18,18 +18,18 @@ train_images = train_images[:-10000]
 train_labels = train_labels[:-10000]
 
 # Model
-model = keras.Sequential([
+'''model = keras.Sequential([
     layers.Input(shape=(28, 28)),
     layers.Flatten(),
     layers.Dense(256, activation="relu"),
     layers.Dense(128, activation="relu"),
     layers.Dense(64, activation="relu"),
     layers.Dense(10, activation="softmax"),
-])
+])'''
 
 
 
-""" # CNN Model
+ # CNN Model
 model = keras.Sequential([
     layers.Input(shape=(28, 28, 1)), # Input shape with channel dimension
     layers.Conv2D(16, kernel_size=(3, 3), activation="relu"),
@@ -40,7 +40,7 @@ model = keras.Sequential([
     layers.Dense(32, activation="relu"),
     layers.Dense(10, activation="softmax"),
 ])
- """
+
 
 learning_rate = 1e-3
 
