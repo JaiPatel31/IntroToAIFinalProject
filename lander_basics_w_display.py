@@ -6,6 +6,7 @@ import random
 import numpy as np
 from collections import deque
 import matplotlib.pyplot as plt
+import imageio
 
 # --------------------
 # Hyperparameters
@@ -27,7 +28,7 @@ TARGET_UPDATE_FREQ = 1000  # steps
 EVAL_EPISODES = 100
 
 # Flag for reward shaping experiment
-USE_SHAPED_REWARD = False  # baseline: False; experiment: True
+USE_SHAPED_REWARD = True  # baseline: False; experiment: True
 
 
 # --------------------
@@ -257,13 +258,18 @@ def evaluate_policy(q_net, device, render=False, num_episodes=EVAL_EPISODES):
 # --------------------
 # Visual Demo Episode (nice for video)
 # --------------------
-def run_visual_episode(q_net, device):
-    env = gym.make(ENV_ID, render_mode="human")
+def save_video_episode(q_net, device, filename="lander_demo.mp4"):
+    env = gym.make(ENV_ID, render_mode="rgb_array")
     state, info = env.reset()
+    frames = []
     done = False
     ep_reward = 0.0
 
     while not done:
+        # Capture frame
+        frame = env.render()
+        frames.append(frame)
+
         with torch.no_grad():
             s = torch.tensor(state, dtype=torch.float32, device=device).unsqueeze(0)
             q_values = q_net(s)
@@ -271,11 +277,15 @@ def run_visual_episode(q_net, device):
 
         next_state, reward, terminated, truncated, info = env.step(action)
         done = terminated or truncated
-        state = next_state
         ep_reward += reward
+        state = next_state
 
-    print(f"[VISUAL] Episode reward: {ep_reward:.1f}")
     env.close()
+
+    # Save MP4 video
+    print(f"Saving video to {filename} ...")
+    imageio.mimsave(filename, frames, fps=30)
+    print(f"Done! Episode reward: {ep_reward:.1f}")
 
 
 # --------------------
@@ -288,9 +298,9 @@ if __name__ == "__main__":
     # Plot learning curve
     title = "(Reward Shaping)" if USE_SHAPED_REWARD else "(Baseline)"
     plot_learning_curve(episode_rewards, window=100, title_suffix=title)
-
+    torch.save(q_net.state_dict(), "lander_dqn.pth")
     # Evaluation: pure exploitation, no learning
     avg_reward, success_rate = evaluate_policy(q_net, device, render=False)
 
     # Optional: run 1–2 visual episodes for your demo video
-    # run_visual_episode(q_net, device)
+    save_video_episode(q_net, device, filename="shaped_reward_demo.mp4")
